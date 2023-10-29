@@ -13,3 +13,10 @@ export const movieCreateSchema = movieSchema.omit({id: true});
 export const movieReadSchema = movieSchema.array();
 
 export const movieUpdateSchema = movieSchema.partial();
+
+export const movieAllReadSchema = z.object({
+    prevPage: z.string().nullable(),
+    nextPage: z.string().nullable(),
+    count: z.number(),
+    data: movieReadSchema,
+});
