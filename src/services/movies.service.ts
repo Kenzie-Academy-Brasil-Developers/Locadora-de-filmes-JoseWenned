@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 import { Movie } from "../entities";
-import { MoviesAll, MoviesCreate } from "../interfaces/movies.interfaces";
+import { Movies, MoviesAll, MoviesCreate, MoviesUpdate } from "../interfaces/movies.interfaces";
 import { AppDataSource } from "../data-source";
 
 export const createMovieService = async (data: MoviesCreate) : Promise<Movie> => {
@@ -65,4 +65,34 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
         data: movies[0]
     };
 };
+
+export const updateMoviesService = async (movieData: MoviesUpdate, id: number): Promise<Movies> => {
+
+    const userRepor: Repository<Movie> = AppDataSource.getRepository(Movie);
+
+    const oldMovieData : Movie | null = await userRepor.findOneBy({
+        id: id,
+    });
+
+    const newMovieData : Movie = userRepor.create({
+        ...oldMovieData,
+        ...movieData,
+    });
+
+    await userRepor.save(newMovieData);
+
+    return newMovieData;
+}
+
+export const deleteMoviesService = async (id: number) => {
+    const userRepository : Repository<Movie> = AppDataSource.getRepository(Movie);
+
+    const movie = await userRepository.findOne({
+        where: {
+            id: id,
+        }
+    });
+
+    await userRepository.remove(movie!);
+}
 
