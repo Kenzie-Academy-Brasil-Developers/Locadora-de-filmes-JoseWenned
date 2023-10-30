@@ -16,6 +16,7 @@ export const createMovieService = async (data: MoviesCreate) : Promise<Movie> =>
 
 
 export const readMoviesService = async (page: any, perPage: any, sort: string | null, order: string | null): Promise<MoviesAll> => {
+   
     const userRepor : Repository<Movie> = AppDataSource.getRepository(Movie);
     
     let movies: [Movie[], number];
@@ -33,7 +34,9 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
 
     if(perPage < 1 || perPage > 5){
         perPage = 5;
-        nextPage = `http//:localhost:3000/movies?page=${page + 1}&perPage=${perPage}`;
+        nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=${perPage}`;
+    }else {
+        nextPage = `http://localhost:3000/movies?page=${page + 1}&perPage=${perPage}`;
     };
 
     if(sort === "price"){
@@ -46,8 +49,8 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
         movies = await userRepor.findAndCount({order: {id: "asc"}})
     } else {
         movies = await userRepor.findAndCount({
-            skip: (page - 1) * perPage,
             take: perPage,
+            skip: (page - 1) * perPage,
             order: orderObj
         });
     };
@@ -60,10 +63,11 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
     
     return {
         prevPage: prevPage,
-        nextPage: nextPage!,
+        nextPage: nextPage,
         count: count,
         data: movies[0]
     };
+    
 };
 
 export const updateMoviesService = async (movieData: MoviesUpdate, id: number): Promise<Movies> => {
@@ -85,14 +89,14 @@ export const updateMoviesService = async (movieData: MoviesUpdate, id: number): 
 }
 
 export const deleteMoviesService = async (id: number) => {
-    const userRepository : Repository<Movie> = AppDataSource.getRepository(Movie);
+    const movieRepository : Repository<Movie> = AppDataSource.getRepository(Movie);
 
-    const movie = await userRepository.findOne({
+    const movie = await movieRepository.findOne({
         where: {
             id: id,
         }
     });
 
-    await userRepository.remove(movie!);
+    await movieRepository.remove(movie!);
 }
 
