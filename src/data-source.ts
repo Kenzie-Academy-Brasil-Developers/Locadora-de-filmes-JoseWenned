@@ -4,8 +4,8 @@ import "reflect-metadata";
 import { DataSource, DataSourceOptions } from "typeorm";
 
 const dataSourceConfig = () : DataSourceOptions => {
-    const entitiesPath : string = path.join(__dirname, "./entities/**{ts, js}");
-    const migrationPath : string = path.join(__dirname, "./migrations/**{ts, js}");
+    const entitiesPath : string = path.join(__dirname, "./entities/**.{ts, js}");
+    const migrationPath : string = path.join(__dirname, "./migrations/**.{ts, js}");
 
     if(process.env.NODE_ENV === "test"){
         return{
@@ -29,4 +29,4 @@ const dataSourceConfig = () : DataSourceOptions => {
 
 };
 
-export const AppDataSource = new DataSource(dataSourceConfig());
+export const AppDataSource : DataSource = new DataSource(dataSourceConfig());

@@ -1,11 +1,11 @@
 import "express-async-errors";
-import express , { Application } from "express";
+import express , { Application, json } from "express";
 import { routes } from "./routers/index.router";
-import { handleErrors } from "./errors/handleError.errors";
+import { handleErrors } from "./middlewares/handleErrors.middleware";
 
 const app : Application = express();
 
-app.use(express.json());
+app.use(json());
 app.use("/", routes);
 app.use(handleErrors);
 

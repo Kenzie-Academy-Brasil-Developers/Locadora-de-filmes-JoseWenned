@@ -1,7 +1,8 @@
 import { Repository } from "typeorm";
 import { Movie } from "../entities";
-import { Movies, MoviesAll, MoviesCreate, MoviesUpdate } from "../interfaces/movies.interfaces";
+import { Movies, MoviesAll, MoviesCreate, MoviesRead, MoviesUpdate } from "../interfaces/movies.interfaces";
 import { AppDataSource } from "../data-source";
+import { PaginationMovies } from "../interfaces/pagination.interfaces";
 
 export const createMovieService = async (data: MoviesCreate) : Promise<Movie> => {
     
@@ -15,7 +16,7 @@ export const createMovieService = async (data: MoviesCreate) : Promise<Movie> =>
 }
 
 
-export const readMoviesService = async (page: any, perPage: any, sort: string | null, order: string | null): Promise<MoviesAll> => {
+export const readMoviesService = async (page: any, perPage: any, sort: string | null, order: string | null): Promise<PaginationMovies> => {
    
     const userRepor : Repository<Movie> = AppDataSource.getRepository(Movie);
     

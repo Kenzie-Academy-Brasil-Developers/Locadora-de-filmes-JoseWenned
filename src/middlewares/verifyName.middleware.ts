@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Movie } from "../entities";
-import { AppError } from "../errors/handleError.errors";
+import { AppError } from "../errors/AppError.error";
 
 export const verifyName = async (req: Request, res: Response, next: NextFunction) : Promise<Response | void> => {
     const nameMovie = req.body.name;

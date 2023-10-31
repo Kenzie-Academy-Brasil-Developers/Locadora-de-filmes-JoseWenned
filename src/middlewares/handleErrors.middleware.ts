@@ -1,17 +1,6 @@
-import { error } from "console";
+import { AppError } from "../errors/AppError.error";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-
-export class AppError extends Error {
-   
-    statusCode: number;
-
-    constructor(message: string, statusCode: number = 400) {
-        super(message),
-        this.statusCode = statusCode
-    };
-
-};
 
 export const handleErrors = (err: Error, req: Request, res:Response, next: NextFunction) => {
     
