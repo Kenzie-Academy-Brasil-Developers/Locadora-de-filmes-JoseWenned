@@ -1,24 +1,18 @@
-import { Repository } from "typeorm";
+
 import { Movie } from "../entities";
-import { Movies, MoviesAll, MoviesCreate, MoviesRead, MoviesUpdate } from "../interfaces/movies.interfaces";
-import { AppDataSource } from "../data-source";
+import { Movies, MoviesCreate, MoviesUpdate } from "../interfaces/movies.interfaces";
 import { PaginationMovies } from "../interfaces/pagination.interfaces";
+import { moviesRepor } from "../repositories";
 
 export const createMovieService = async (data: MoviesCreate) : Promise<Movie> => {
     
-    const moviesRepor : Repository<Movie> = AppDataSource.getRepository(Movie);
-
-    const movies : Movie = moviesRepor.create(data);
-
-    await moviesRepor.save(movies);
+    const newMovies : Movie = await moviesRepor.save(data);
     
-    return movies;
-}
+    return newMovies;
 
+};
 
 export const readMoviesService = async (page: any, perPage: any, sort: string | null, order: string | null): Promise<PaginationMovies> => {
-   
-    const userRepor : Repository<Movie> = AppDataSource.getRepository(Movie);
     
     let movies: [Movie[], number];
     let orderObj = {};
@@ -47,9 +41,9 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
     };
 
     if(!page || !perPage){
-        movies = await userRepor.findAndCount({order: {id: "asc"}})
+        movies = await moviesRepor.findAndCount({order: {id: "asc"}})
     } else {
-        movies = await userRepor.findAndCount({
+        movies = await moviesRepor.findAndCount({
             take: perPage,
             skip: (page - 1) * perPage,
             order: orderObj
@@ -71,33 +65,15 @@ export const readMoviesService = async (page: any, perPage: any, sort: string | 
     
 };
 
-export const updateMoviesService = async (movieData: MoviesUpdate, id: number): Promise<Movies> => {
+export const updateMoviesService = async (movie: Movie, data: Partial<Movie>): Promise<Movie> => {
 
-    const userRepor: Repository<Movie> = AppDataSource.getRepository(Movie);
+    return await moviesRepor.save({ ...movie, ...data })
+    
+};
 
-    const oldMovieData : Movie | null = await userRepor.findOneBy({
-        id: id,
-    });
+export const deleteMoviesService = async (movie: Movie) => {
 
-    const newMovieData : Movie = userRepor.create({
-        ...oldMovieData,
-        ...movieData,
-    });
+    await moviesRepor.remove(movie);
 
-    await userRepor.save(newMovieData);
-
-    return newMovieData;
-}
-
-export const deleteMoviesService = async (id: number) => {
-    const movieRepository : Repository<Movie> = AppDataSource.getRepository(Movie);
-
-    const movie = await movieRepository.findOne({
-        where: {
-            id: id,
-        }
-    });
-
-    await movieRepository.remove(movie!);
-}
+};
 

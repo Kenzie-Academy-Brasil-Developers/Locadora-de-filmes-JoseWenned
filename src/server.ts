@@ -8,12 +8,12 @@ AppDataSource.initialize()
 .then( async () => {
     console.log("Database connected.")
 
-    const PORT : number = parseInt(process.env.PORT!) || 3000;
+    const PORT : number = Number(process.env.PORT) || 3000;
 
-    app.listen(PORT, async () => {
-        console.log(`App running on http://localhost:${PORT}`);
+    app.listen(PORT, (): void => {
+        console.log(`App is running at port${PORT}`);
     });
 })
-.catch((err) => console.error(err));
+.catch((err: unknown): void => console.error(err));
 
 
