@@ -1,24 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import { Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
-import { Movie } from "../entities";
 import { AppError } from "../errors/AppError.error";
+import { moviesRepor } from "../repositories";
 
-export const verifyMovie = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+export const verifyMovieId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     const id: number = Number(req.params.id);
 
-    const userRepor : Repository<Movie> = AppDataSource.getRepository(Movie);
-
-    const movie = await userRepor.findOne({
+    const foundMovie = await moviesRepor.findOne({
         where: {
             id: id,
         }
     });
 
-    if(!movie){
+    if(!foundMovie){
         throw new AppError("Movie not found", 404);
     };
+
+    res.locals = {...res.locals, foundMovie}
 
     return next();
 
