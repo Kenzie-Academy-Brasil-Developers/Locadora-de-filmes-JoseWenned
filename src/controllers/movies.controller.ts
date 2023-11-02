@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createMovieService, deleteMoviesService, readMoviesService, updateMoviesService } from "../services/movies.service";
 import { Movie } from "../entities";
-import { MoviesAll } from "../interfaces/movies.interfaces";
+import { MoviesRepor } from "../interfaces/movies.interfaces";
 
 
 export const createMoviesController = async (req: Request, res: Response): Promise<Response> => {
@@ -24,7 +24,7 @@ export const readMoviesController = async (req: Request, res: Response): Promise
     const sort: any = req.query.sort;
     let order: any = req.query.order || "asc";
 
-    const movies: MoviesAll = await readMoviesService(
+    const movies: MoviesRepor = await readMoviesService(
         page,
         perPage,
         sort,

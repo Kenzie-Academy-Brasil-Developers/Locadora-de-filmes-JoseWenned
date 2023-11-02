@@ -3,7 +3,7 @@ import { createMoviesController, deleteMoviesController, readMoviesController, u
 import { verifyBody } from "../middlewares/verifyBody.middleware";
 import { movieCreateSchema } from "../schemas/movies.schema";
 import { verifyName } from "../middlewares/verifyName.middleware";
-import { verifyMovieId } from "../middlewares/verifyMovie.middleware";
+import { verifyMovieId } from "../middlewares/verifyMovieId.middleware";
 
 export const moviesRouter : Router = Router();
 
