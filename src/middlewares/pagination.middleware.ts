@@ -13,9 +13,32 @@ export const pagination = (req: Request, res: Response, next: NextFunction): voi
     const prevPage: string = `${baseUrl}?page=${page - 1}&perPage${perPage}`;
     const nextPage: string = `${baseUrl}?page=${page + 1}&perPage${perPage}`;
 
+    const queryOrder: any = req.query.order;
+    const querySort: any = req.query.sort;
+
+    const orderOpts: Array<string> = ["asc", "desc"];
+    const sortOpts: Array<string> = ["price" || "duration"];
+
+    let order: string;
+    let sort: string;
+
+    if(!(querySort && sortOpts.includes(querySort))){
+        sort = "id";
+    }else {
+        sort = querySort;
+    };
+
+    if(!querySort || !(queryOrder && orderOpts.includes(queryOrder))){
+        order = "asc";
+    }else {
+        order = queryOrder;
+    };
+
     const pagination: PaginationParams = {
-        page,
+        page: perPage * (page - 1),
         perPage,
+        order,
+        sort,
         prevPage,
         nextPage
     }
