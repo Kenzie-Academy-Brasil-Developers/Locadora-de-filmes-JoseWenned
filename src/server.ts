@@ -14,6 +14,6 @@ AppDataSource.initialize()
         console.log(`App is running at port${PORT}`);
     });
 })
-.catch((err: unknown): void => console.error(err));
+.catch((error: unknown): void => console.log(error));
 
 
