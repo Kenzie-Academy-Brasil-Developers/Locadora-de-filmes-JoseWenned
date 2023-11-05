@@ -16,7 +16,7 @@ export const handleErrors = (err: Error, req: Request, res:Response, next: NextF
         });
     };
 
-    console.log(err)
+    console.log(err);
 
     return res.status(500).json({
         message: "Internal server error",

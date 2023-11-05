@@ -1,4 +1,3 @@
-
 import { Movie } from "../entities";
 import { MoviesCreate } from "../interfaces/movies.interfaces";
 import { PaginationParams } from "../interfaces/pagination.interfaces";
@@ -14,7 +13,7 @@ export const createMovieService = async (data: MoviesCreate) : Promise<Movie> =>
 
 export const readMoviesService = async ({page, perPage, prevPage, nextPage, order, sort}: PaginationParams): Promise<any> => {
     
-    const [ movies, count ] = await moviesRepor.findAndCount({
+    const [ movies, count ]: [Movie[], number] = await moviesRepor.findAndCount({
         order: { [sort]: order },
         skip: page,
         take: perPage
