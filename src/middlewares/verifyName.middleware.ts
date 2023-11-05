@@ -18,7 +18,7 @@ export const verifyName = async (req: Request, res: Response, next: NextFunction
     };
 
     if(movie){
-        throw new AppError("Movie already exists", 409);
+        throw new AppError("Movie already exists.", 409);
     };
 
     return next();
